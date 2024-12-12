@@ -1,0 +1,29 @@
+s = new semaphore(0)
+mutex = new semaphore(1)
+count = 0
+total = n
+times [n]
+
+def foo(int n):
+    for i in range(n):
+        t = new thread(sleep(i))
+        t.start()
+
+def sleep(int id)
+
+    int time = random(1, 5)
+    sleep(time)
+
+    s = random(0, 10)
+
+    mutex.wait()
+    times[id] = s
+    count ++
+    if count == n:
+        s.signal()
+    mutex.signal()
+
+    s.wait()
+    s.signal()
+
+    sleep(times[(id - 1 + n) % n])

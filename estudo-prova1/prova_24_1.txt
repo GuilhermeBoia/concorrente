@@ -1,0 +1,154 @@
+1 - Muito mais requisições de clientes externos do que internos. Para o projetista do sistema, é importante
+manter um balanço entre requisições de ambos os tipos, executando uma determinada função (handle),
+numa proporção 1:4. Ou seja, para cada quatro requisições externas (threads) executando a função handle,
+precisamos ter uma requisição (thread) interna executando a função handle.
+
+func void main() {
+    Semaphore noExternal = new Semaphore(4)
+    Semaphore noInternal = new Semaphore(1)
+    Semaphore mutex = new Semaphore(1)
+    external_count = 0
+}
+
+func void externalRoute(Request req) {
+    noExternal.wait()
+
+    handle()
+
+    mutex.wait()
+    if external_count == 4:
+        external_count = 0
+        internal.signal()
+    mutex.signal()
+
+}
+
+func void internalRoute(Request req) {
+    noInternal.wait()
+    handle()
+    for i in range(4):
+        external.signal()
+}
+
+FORMA CORRETA:
+
+func void main() {
+    Barrier barrier = new Barrier(4)
+    Semaphore multiplex = new Semaphore(4)
+    Semaphore mutex = new Semaphore(1)
+    external_count = 0
+}
+
+func void externalRoute(Request req) {
+    multiplex.wait()
+    handle()
+    barrier.await()
+    multiplex.signal()
+}
+
+func void internalRoute(Request req) {
+    mutex.wait()
+    handle()
+    barrier.await()
+    mutex.signal()
+}
+
+
+
+2 - O objetivo desta estrutura é servir como um buffer de tamanho fixo, onde
+threads produtoras enfileiram itens a serem consumidos por threads consumidoras.
+Garanta que uma thread consumidora aguarde a chegada de um novo item quando o buffer
+estiver vazio e que uma thread produtora aguarde o consumo de algum item caso o buffer esteja cheio.
+
+class BufferedQueue {
+    int capacity;
+    private final Queue<T> queue;
+    Semaphore SC;
+    Semaphore SP;
+    Semaphore mutex;
+
+    new BufferedQueue(int capacity) {
+        this.capacity = capacity;
+        this.queue = new LinkedList<>(); 
+        this.SC = new Semaphore(0);
+        this.SP = new Semaphore(capacity);
+        this.mutex = new Semaphore(1);
+    }
+
+    T dequeue() {
+        SC.wait()
+
+        mutex.wait()
+        T item = queue.poll();
+        mutex.signal()
+
+        SP.signal()
+        return item;
+    }
+
+    void enqueue(T item){
+        SP.wait()
+
+        mutex.wait()
+        queue.add(item);
+        mutex.signal()
+
+        SC.signal()
+    }
+}
+
+
+
+3 - Um cache de memória é um componente de hardware ou software que armazena dados
+temporariamente para acelerar leituras de dados que são acessados frequentemente. Em um
+sistema multi-threaded, múltiplas threads podem acessar o cache de memória
+simultaneamente. No entanto, a depender do tipo de operação a ser realizada pela thread
+no cache, alguns desafios de concorrência precisam ser considerados. Seguem os
+requisitos a serem atendidos:
+        Leitura Simultânea: Várias threads podem ler do cache ao mesmo tempo sem
+                            problemas, desde que não modifiquem os dados;
+        Escrita Exclusiva: Quando uma thread precisa atualizar ou escrever no
+                            cache, ele deve garantir que nenhuma outra operação (leitura ou escrita)
+                            esteja ocorrendo simultaneamente para evitar dados inconsistentes.
+        Priorização da Escrita: Quando uma thread vai escrever no cache e já existe
+                                uma ou mais threads lendo o cache, a thread que vai realizar a escrita,
+                                além de executar de forma exclusiva, deve ser priorizada em relação à novas
+                                threads de leitura que cheguem depois. Ou seja, as threads de leitura que
+                                já tenham chegado podem terminar de executar mas novas threads de leitura
+                                que cheguem depois não devem prosseguir.
+
+
+func void main() {
+    Semaphore readers = new Semaphore(1)
+    Semaphore writers = new Semaphore(1)
+    Semaphore mutex = new Semaphpre(1)
+}
+
+func data wrap_read() {
+    readers.wait()
+    readers.signal()
+    
+    mutex.wait()
+    count_r == 0:
+        writers.wait()
+    count_r ++
+    mutex.signal()
+
+    data = read()
+
+    mutex.wait()
+    count_r --
+    count_r == 0:
+        writers.signal()
+    mutex.signal()
+
+    return data;
+}
+
+func void wrap_write(data d) {
+    readers.wait()
+    writers.wait()
+    write(d)
+    writers.signal()
+    readers.signal()
+}

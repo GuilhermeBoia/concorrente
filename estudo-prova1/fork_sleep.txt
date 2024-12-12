@@ -1,0 +1,45 @@
+SEM SEMAPHORO ----------------------
+
+def foo(int n):
+    threads = []
+    for i in range(n):
+        t = new thread(sleep(5))
+        threads.append(t)
+        t.start()
+
+    for e in threads:
+        t.join()
+
+    return n
+
+def sleep(int max_time)
+    int time = random(max_time)
+    sleep(time)
+
+
+-----------------------------------------------------------------------------------------
+
+
+COM SEMAPHORO -----------------------
+
+s = new semaphore(0)
+mutex = new semaphore(1)
+count = 0
+total = n
+
+def foo(int n):
+    for i in range(n):
+        t = new thread(sleep())
+        t.start()
+
+    s.wait()
+    print(n)
+
+def sleep()
+    int time = random(1, 5)
+    sleep(time)
+    mutex.wait()
+    count ++
+    if count == n:
+        s.signal()
+    mutex.sigal()

@@ -1,0 +1,23 @@
+### PROBLEMAS ORDINÁRIOS ###
+#   3.1 (ok)
+#   3.3 (ok)
+#   3.4 (ok)
+#   3.5 (ok)
+#   3.6 (ok)
+#   3.8 (ok)
+#   4.1 (ok)
+#   4.2 (ok)
+#   4.3 
+#   4.4 (ok)
+
+#Problemas extraordinários
+#   3.7
+#   6.2
+#   5.2
+#   5.3
+#Problemas mais que extraordinários
+#   4.5
+#   5.1
+#   7.1
+
+

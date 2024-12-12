@@ -1,0 +1,57 @@
+func main() {
+    int n;
+    count_0 = count_1 = 0;
+    noType0 = new Semaphore(1)
+    noType1 = new Semaphore(1)
+    max_exec = new Semaphore(n)
+}
+
+func handle(Request req) {
+    if req.type == 0:
+        handle0(req)
+    else:
+        handle1(req)
+}
+
+
+func handle0(Request req) {
+    noType0.wait()
+    noType0.signal()
+
+    mutex_wait()
+    if count_0 == 0:
+        noType1.wait()
+    count_0 ++
+    mutex.signal()
+    
+    max_exec.wait()
+    exec(req)
+    max_exec.signal()
+
+    mutex_wait()
+    count_0 --
+    if count_0 = 0:
+        noType1.signal()
+    mutex.signal()
+}
+
+func handle1(Request req) {
+    noType1.wait()
+    noType1.signal()
+
+    mutex_wait()
+    if count_1 == 0:
+        noType0.wait()
+    count_1 ++
+    mutex.signal()
+    
+    max_exec.wait()
+    exec(req)
+    max_exec.signal()
+
+    mutex_wait()
+    count_1 --
+    if count_1 = 0:
+        noType0.signal()
+    mutex.signal()
+}

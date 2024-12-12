@@ -1,0 +1,27 @@
+void main()
+    join = new Semaphore(0)
+    mutex = new Semaphore(1)
+    numero_threads
+    count = 0
+    somador = 0
+
+int gateway(int nthreads, int wait_nthreads)
+    for i in range(nthreads):
+        thread = new Thread(request())
+        thread.start()
+    
+    join.wait()
+    print(somador)
+
+void* request(void*)
+    int n = random()
+    sleep(n)
+
+    mutex.wait()
+    
+    count++
+    somador += n
+    if count == numero_threads:
+        join.signal()
+    mutex.signal()
+    

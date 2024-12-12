@@ -1,0 +1,40 @@
+void main() {
+    SC = new Semaphore(0)
+    SP = new Semaphore(1)
+    mutex = new Semaphore(1)
+    int k;
+    count = 0;
+}
+
+//consumidor
+void receive() {
+    
+    for (;;) {
+        SC.wait()
+
+        mutex.wait()
+        
+        byte[] = getDataPacket();
+        count++
+        if(count == k) {
+            count = 0;
+            SP.signal();
+        }
+
+        mutex.signal()
+
+    }
+}
+
+//produtor
+void handle() {
+    for (;;) {
+        SP.wait()
+
+        byte[][] data = readNetBuffer();
+        fillPackets(data);
+
+        for i in range(k):
+            SC.signal()
+    }
+}

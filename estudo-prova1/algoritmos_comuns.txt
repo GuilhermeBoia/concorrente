@@ -1,0 +1,111 @@
+
+## RENDEVOUZ
+
+main {
+    b1_wait = new Semaphore(0)
+    a1_wait = new Semaphore(0)
+}
+a {
+    a1() 
+    a1_wait.signal()
+    b1_wait.wait()
+    a2()
+}
+b {
+    b1()
+    b1_wait.signal()
+    a1_wait.wait()
+    b2()
+}
+
+## BARREIRA
+
+barrier {
+    main() {
+        count = 0
+        Semaphore catraca = new Semaphore(0)
+        Semaphore mutex = new Semaphore(1)
+    }
+
+    await() {
+        
+        mutex.wait()
+        count ++
+        if count == n:
+            catraca.signal()
+        mutex.signal()
+
+        catraca.wait()
+        catraca.signal()
+    }
+}
+
+A catraca2 serve para evitar "corridas" entre threads que estão
+finalizando um ciclo e aquelas que estão iniciando o próximo.
+## BARREIRA REUTILIZÁVEL
+
+reusable_barrier {
+    main() {
+        count = 0
+        Semaphore catraca = new Semaphore(0)
+        Semaphore catraca2 = new Semaphore(1)
+        Semaphore mutex = new Semaphore(1)
+    }
+
+    await() {
+        
+        mutex.wait()
+        count ++
+        if count == n:
+            catraca2.wait()
+            catraca.signal()
+        mutex.signal()
+
+        catraca.wait()
+        catraca.signal()
+
+        mutex.wait()
+        count --
+        if count == 0:
+            catraca.wait()
+            catraca2.signal()
+        mutex.signal()
+
+        catraca2.wait()
+        catraca2.signal()
+
+    }
+}
+
+## PRODUTOR CONSUMIDOR
+
+main {
+    SC = new Semaphore(0)
+    SP = new Semaphore(k) //buffer size
+    mutex = new Semaphore(1)
+}
+
+produtor {
+   
+    SP.wait()
+
+    r = random_produce
+    mutex.wait()
+    produce(r)
+    mutex.signal()
+
+    SC.signal()
+}
+
+consumidor {
+    SC.wait()
+    
+    mutex.wait()
+    consume()
+    mutex.signal()
+
+    SP.signal()
+}
+
+
+## READ_WRITE LOCK

@@ -1,0 +1,50 @@
+main()
+    max_exec = new Semaphore(n)
+    noPost = new Semaphore(1)
+    noGet = new Semaphore(1)
+    count_post = count_get = 0  
+    mutex = new Semaphore(1)
+
+handle_post()
+    noPost.wait()
+    noPost.signal()
+
+    mutex.wait()
+    if count_post == 0:
+        noGet.wait()
+    count_post ++ 
+    mutex.signal()
+
+    max_exec.wait()
+    do_post()
+    max_exec.signal()
+
+    mutex.wait()
+    count_post --
+    if count_post == 0:
+        noGet.signal()
+    mutex.signal()
+
+
+    
+
+
+handle_get()
+    noGet.wait()
+    noGet.signal()
+
+    mutex.wait()
+    if count_get == 0:
+        noPost.wait()
+    count_get ++ 
+    mutex.signal()
+
+    max_exec.wait()
+    do_get()
+    max_exec.signal()
+
+    mutex.wait()
+    count_get --
+    if count_get == 0:
+        noGet.signal()
+    mutex.signal()
