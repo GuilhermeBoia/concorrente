@@ -1,0 +1,9 @@
+Etapa 1:
+
+Tempo de produção > Tempo de consumo
+    - Como o tempo de produção é maior, a fila compartilhada demora mais para ser preenchida e o consumidor demora mais esperando para ter algo para consumir.
+    Pois, com o tempo de consumo menor que o de produção, os itens vão sendo consumidos assim que entram na fila.
+
+Tempo de consumo > Tempo de produção
+    - Como o tempo de consumo é maior, a fila compartilhada é preenchida mais rapidamente, pelo curto tempo de produção e demora para o consumo. Ou seja,
+    em um espaço de tempo fixo mais itens são produzidos do que consumidos.

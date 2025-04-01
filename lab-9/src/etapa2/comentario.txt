@@ -1,0 +1,13 @@
+Etapa 2:
+
+Agora com as configurações de tempo o programa não roda infinitamente. Vamos analisar os casos:
+
+1. (Tempo Consumidor - Tempo Produtor) > 600.
+    - Nesse caso o consumidor não consome nada. Pois o timeout acontece logo na primeira tentativa de consumir um item e ele para. E o programa vai rodar até o limite de quantidade do produtor.
+
+2. (Tempo Consumidor - Tempo Produtor) < 600.
+    - Conforme for avançando com as produções e consumos, como o tempo de consumo é menor pode ser que uma hora ele fique esperando um tempo maior que 600
+    para consumir e dê o timeout. E o programa vai rodar até o limite de quantidade do produtor.
+
+3. (Tempo Produtor > Tempo consumidor)
+    - O timeout do consumidor nunca vai acontecer porque sempre terá um item a ser consumidor. O programa vai rodar até bater o limite de 10000 produções.

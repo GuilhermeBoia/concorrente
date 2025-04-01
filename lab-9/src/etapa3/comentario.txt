@@ -1,0 +1,4 @@
+Etapa 3:
+
+    Com a nova versão do programa as questões de tempo acontecem tal como a etapa passada, porém, os itens na fila compartilhada estão sempre ordenados. 
+    Com isso, o consumidor sempre estará consumindo os menores valores da fila (devido a prioridade)
